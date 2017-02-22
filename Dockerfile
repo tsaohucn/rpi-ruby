@@ -13,7 +13,6 @@ RUN apt-get update \
     libyaml-dev \
     procps \
     zlib1g-dev \
-    git \
   && rm -rf /var/lib/apt/lists/*
 
 ENV RUBY_MAJOR 2.3
