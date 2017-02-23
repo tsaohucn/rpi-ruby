@@ -1,6 +1,6 @@
 # Pull base image
-FROM resin/rpi-raspbian:jessie
-MAINTAINER Govinda fichtner <govinda@hypriot.com>
+FROM resin/rpi-raspbian:wheezy
+MAINTAINER Govinda fichtner <tsaohucn@gmail.com>
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
@@ -13,8 +13,7 @@ RUN apt-get update \
     libyaml-dev \
     procps \
     zlib1g-dev \
-    git \
-  && rm -rf /var/lib/apt/lists/*
+    nodejs
 
 ENV RUBY_MAJOR 2.3
 ENV RUBY_VERSION 2.3.3
@@ -23,9 +22,9 @@ ENV RUBY_DOWNLOAD_SHA256 241408c8c555b258846368830a06146e4849a1d58dcaf6b14a3b6a7
 # some of ruby's build scripts are written in ruby
 # we purge this later to make sure our final image uses what we just built
 RUN buildDeps=' \
+    build-essential \
     autoconf \
     bison \
-    gcc \
     libbz2-dev \
     libgdbm-dev \
     libglib2.0-dev \
@@ -33,11 +32,10 @@ RUN buildDeps=' \
     libreadline-dev \
     libxml2-dev \
     libxslt-dev \
-    make \
     ruby \
+    git \
   ' \
   && set -x \
-  && apt-get update \
   && apt-get install -y --no-install-recommends $buildDeps \
   && rm -rf /var/lib/apt/lists/* \
   && mkdir -p /usr/src/ruby \
@@ -50,8 +48,7 @@ RUN buildDeps=' \
   && ./configure --disable-install-doc \
   && make -j"$(nproc)" \
   && make install \
-  && rm -r /usr/src/ruby \
-  && apt-get purge -y --auto-remove $buildDeps
+  && rm -r /usr/src/ruby
 
 # skip installing gem documentation
 RUN echo 'gem: --no-rdoc --no-ri' >> /.gemrc
