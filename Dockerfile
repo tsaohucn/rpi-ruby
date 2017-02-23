@@ -13,7 +13,8 @@ RUN apt-get update \
     libyaml-dev \
     procps \
     zlib1g-dev \
-    nodejs
+    nodejs \
+    libmysqlclient-dev
 
 ENV RUBY_MAJOR 2.3
 ENV RUBY_VERSION 2.3.3
